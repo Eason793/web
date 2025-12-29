@@ -11,9 +11,6 @@
     <style>
         :root {
             --primary-color: #52a033; /* 苦力怕綠 */
-            --bedrock-color: #2e86de; /* 基岩版藍 */
-            --yt-color: #FF0000;      /* YouTube紅 */
-            --dc-color: #5865f2;      /* Discord藍 */
             --secondary-color: #1a1a1a;
             --text-light: #ffffff;
             --text-dark: #333333;
@@ -62,31 +59,19 @@
             align-items: center;
             text-align: center;
             color: white;
-            padding: 120px 20px 80px 20px;
+            padding: 100px 20px;
         }
 
         .hero h1 { font-size: 3.5rem; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
-        
-        .section-tag {
-            background: var(--primary-color);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .hero p { margin-bottom: 30px; font-size: 1.1rem; opacity: 0.9; }
 
-        .section-tag.bedrock { background: var(--bedrock-color); margin-top: 20px; }
-
-        /* IP 卡片區域 */
+        /* 多節點 IP 區域 */
         .ip-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
             max-width: 1200px;
-            margin-bottom: 20px;
         }
 
         .ip-card {
@@ -99,20 +84,44 @@
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
         .ip-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             background: rgba(82, 160, 51, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
 
-        .ip-card.bedrock-card { border-color: var(--bedrock-color); }
-        .ip-card.bedrock-card:hover { background: rgba(46, 134, 222, 0.2); }
-        .ip-card.bedrock-card .node-name { color: var(--bedrock-color); }
+        .node-name {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
 
-        .node-name { display: block; font-size: 0.9rem; color: var(--primary-color); font-weight: bold; margin-bottom: 8px; }
-        .node-address { display: block; font-family: 'Courier New', monospace; font-size: 1.1rem; font-weight: bold; }
-        .copy-icon { position: absolute; right: 15px; top: 15px; opacity: 0.5; font-size: 0.8rem; }
+        .node-address {
+            display: block;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .node-desc {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        .copy-icon {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
 
         /* 特色區塊 */
         .features {
@@ -133,39 +142,16 @@
 
         .feature-card i { font-size: 3rem; color: var(--primary-color); margin-bottom: 15px; }
 
-        /* 頁尾與社交連結 */
+        /* 頁尾 */
         footer {
             background: var(--secondary-color);
             color: white;
             text-align: center;
-            padding: 60px 20px;
+            padding: 60px 0;
         }
 
-        .social-banner {
-            max-width: 250px;
-            border-radius: 10px;
-            margin: 20px 0;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        .social-banner:hover { transform: scale(1.05); }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 20px 0;
-        }
-
-        .social-links a {
-            color: white;
-            font-size: 3rem;
-            transition: 0.3s;
-        }
-
-        .social-links .fa-discord:hover { color: var(--dc-color); transform: scale(1.1); }
-        .social-links .fa-youtube:hover { color: var(--yt-color); transform: scale(1.1); }
+        .social-links a { color: white; font-size: 1.5rem; margin: 0 15px; transition: 0.3s; }
+        .social-links a:hover { color: var(--primary-color); }
 
         /* 複製成功提示 */
         .toast {
@@ -179,6 +165,13 @@
             border-radius: 50px;
             display: none;
             z-index: 2000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 50px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
@@ -200,90 +193,76 @@
 
     <section class="hero" id="home">
         <h1>探索無限可能的方塊世界</h1>
+        <p>請選擇最適合您的連接節點</p>
         
-        <!-- Java 版 -->
-        <span class="section-tag">Java Edition (電腦版)</span>
         <div class="ip-container">
-            <div class="ip-card" onclick="copyIP('toyea-tw.de5.net', '台灣 Java')">
+            <!-- 台灣節點 -->
+            <div class="ip-card" onclick="copyIP('toyea-tw.de5.net', '台灣')">
                 <i class="far fa-copy copy-icon"></i>
                 <span class="node-name"><i class="fas fa-location-dot"></i> Taiwan Node</span>
                 <span class="node-address">toyea-tw.de5.net</span>
+                <p class="node-desc">台灣玩家首選，極低延遲體驗。</p>
             </div>
-            <div class="ip-card" onclick="copyIP('toyea-hk.de5.net', '香港 Java')">
+
+            <!-- 香港節點 -->
+            <div class="ip-card" onclick="copyIP('toyea-hk.de5.net', '香港')">
                 <i class="far fa-copy copy-icon"></i>
                 <span class="node-name"><i class="fas fa-location-dot"></i> Hong Kong Node</span>
                 <span class="node-address">toyea-hk.de5.net</span>
+                <p class="node-desc">海外/港澳玩家推薦，穩定連線。</p>
             </div>
-        </div>
 
-        <!-- 基岩版 -->
-        <span class="section-tag bedrock">Bedrock Edition (手機 / 電腦)</span>
-        <div class="ip-container">
-            <div class="ip-card bedrock-card" onclick="copyIP('toyea-tw.de5.net', '基岩版位址')">
+            <!-- 美國節點 -->
+            <div class="ip-card" onclick="copyIP('toyea-us.de5.net', '美國')">
                 <i class="far fa-copy copy-icon"></i>
-                <span class="node-name"><i class="fas fa-mobile-screen"></i> IP Address</span>
-                <span class="node-address">toyea-tw.de5.net</span>
-            </div>
-            <div class="ip-card bedrock-card" onclick="copyIP('19132', '連接埠')">
-                <i class="far fa-copy copy-icon"></i>
-                <span class="node-name"><i class="fas fa-door-open"></i> Port</span>
-                <span class="node-address">19132</span>
+                <span class="node-name"><i class="fas fa-location-dot"></i> Global Node</span>
+                <span class="node-address">toyea-us.de5.net</span>
+                <p class="node-desc">北美與國際長途連線優化節點</p>
             </div>
         </div>
-        <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.6;">點擊卡片即可複製位址</p>
+        <p style="margin-top: 25px; font-size: 0.9rem; opacity: 0.6;">點擊上方任何節點卡片即可複製位址</p>
     </section>
 
     <section class="features" id="features">
         <div class="feature-card">
             <i class="fas fa-shield-alt"></i>
             <h3>穩定運行</h3>
-            <p>目前平日預算有限僅六日開放，暑假改成24/7美國主機，提供最穩定的生存環境。</p>
+            <p>目前平日預算有限僅開放六日，暑假將改成24/7美國主機，提供最穩定的生存環境。</p>
         </div>
         <div class="feature-card">
             <i class="fas fa-users"></i>
             <h3>友好社群</h3>
-            <p>友善的玩家環境，無論你是新手還是建築大師，這裡都有你的容身之處。</p>
+            <p>嚴謹的管理團隊與友善的玩家環境，杜絕任何作弊與惡意騷擾行為。</p>
         </div>
         <div class="feature-card">
-            <i class="fas fa-video"></i>
-            <h3>精采紀錄</h3>
-            <p>定期將伺服器活動錄製成影片分享至 YouTube，記錄下每一刻精彩瞬間。</p>
+            <i class="fas fa-map-marked-alt"></i>
+            <h3>多樣玩法</h3>
+            <p>包含生存、小遊戲等多種模式，每週定期舉辦豐富社群活動。</p>
         </div>
     </section>
 
     <footer id="join">
-        <h3>加入我們的社群</h3>
-        <p>點擊下方圖片或圖示與我們互動</p>
-        
-        <!-- Discord Banner -->
-        <a href="你的Discord邀請連結" target="_blank">
-            <img src="api.duolun.one" alt="Join Discord" class="social-banner">
-        </a>
-
-        <div class="social-links">
-            <!-- Discord -->
-            <a href="discord.com" target="_blank" title="Discord">
-                <i class="fab fa-discord"></i>
-            </a>
-            <!-- YouTube -->
-            <a href="youtube.com" target="_blank" title="YouTube頻道">
-                <i class="fab fa-youtube"></i>
-            </a>
+        <p>跟隨我們的最新動態請到Discord群組</p>
+        <div class="social-links" style="margin: 20px 0;">
+            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
         </div>
-        
-        <p style="margin-top: 30px; opacity: 0.5;">&copy; 2025 Minecraft | toyea-拓野伺服器. 版權所有.</p>
+        <p>&copy; 2025 Minecraft|toyea-拓野伺服器. 版權所有.</p>
     </footer>
 
-    <div class="toast" id="toast">IP 已複製！</div>
+    <div class="toast" id="toast">IP 已複製到剪貼簿！</div>
 
     <script>
         function copyIP(ip, region) {
             navigator.clipboard.writeText(ip).then(() => {
                 const toast = document.getElementById('toast');
-                toast.innerHTML = `<i class="fas fa-check"></i> 已複製 ${region}！`;
+                toast.innerHTML = `<i class="fas fa-check"></i> 已複製 ${region} 節點 IP！`;
                 toast.style.display = 'block';
-                toast.style.background = region.includes('基岩') || region.includes('埠') ? '#2e86de' : '#52a033';
-                setTimeout(() => { toast.style.display = 'none'; }, 2500);
+                
+                // 3秒後消失
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 3000);
             });
         }
     </script>
