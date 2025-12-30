@@ -14,6 +14,7 @@
             --secondary-color: #1a1a1a;
             --text-light: #ffffff;
             --text-dark: #333333;
+            --announcement-height: 40px; /* 公告欄高度 */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
@@ -23,9 +24,35 @@
             line-height: 1.6;
             color: var(--text-dark);
             background-color: #f4f4f4;
+            transition: padding-top 0.3s ease; /* 平滑過渡 */
         }
 
-        /* 導覽列 */
+        /* --- 新增：公告欄樣式 --- */
+        #site-announcement {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            height: var(--announcement-height);
+            line-height: var(--announcement-height);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 2000;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: none; /* 初始隱藏，由 JS 判斷顯示 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        #site-announcement i { margin-right: 8px; }
+        .close-announcement {
+            position: absolute;
+            right: 20px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .close-announcement:hover { opacity: 1; }
+
+        /* 導覽列 - 這裡有修改 position 以配合公告欄 */
         nav {
             background-color: rgba(0, 0, 0, 0.9);
             color: white;
@@ -35,8 +62,9 @@
             align-items: center;
             position: fixed;
             width: 100%;
-            top: 0;
+            top: 0; /* 初始在頂部 */
             z-index: 1000;
+            transition: top 0.3s ease;
         }
 
         .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
@@ -182,7 +210,13 @@
 </head>
 <body>
 
-    <nav>
+    <!-- 新增公告欄結構 -->
+    <div id="site-announcement">
+        <span><i class="fas fa-bullhorn"></i> 伺服器目前僅開放六日運行，暑假將改為 24/7 全天候開啟！</span>
+        <span class="close-announcement" onclick="closeAnnouncement()">×</span>
+    </div>
+
+    <nav id="main-nav">
         <div class="logo"><i class="fas fa-cubes"></i> toyea-拓野伺服器</div>
         <ul class="nav-links">
             <li><a href="#home">首頁</a></li>
@@ -227,7 +261,7 @@
         <div class="feature-card">
             <i class="fas fa-shield-alt"></i>
             <h3>穩定運行</h3>
-            <p>目前平日預算有限僅開放六日，暑假將改為24/7美國主機，提供最穩定的生存環境。</p>
+            <p>目前預算有限僅開放六日，暑假將改為24/7主機，提供最穩定的生存環境。</p>
         </div>
         <div class="feature-card">
             <i class="fas fa-users"></i>
@@ -244,22 +278,43 @@
     <footer id="join">
         <p>跟隨我們的最新動態請到Discord群組</p>
         <div class="social-links" style="margin: 20px 0;">
-            <a href="#"><i class="fab fa-discord"></i></a>
+            <a href="discord.gg"><i class="fab fa-discord"></i></a>
             <a href="#"><i class="fab fa-facebook"></i></a>
         </div>
-        <p>&copy; 2025 Minecraft|toyea-拓野伺服器. 版權所有.</p>
+        <p>&copy; 2025 Minecraft | toyea-拓野伺服器. 版權所有.</p>
     </footer>
 
     <div class="toast" id="toast">IP 已複製到剪貼簿！</div>
 
     <script>
+        // 公告欄邏輯
+        const storageKey = 'announcement_2025_v1';
+        const announcement = document.getElementById('site-announcement');
+        const nav = document.getElementById('main-nav');
+
+        window.onload = function() {
+            if (!localStorage.getItem(storageKey)) {
+                announcement.style.display = 'block';
+                // 調整導覽列與 body 的位置
+                nav.style.top = '40px';
+                document.body.style.paddingTop = '40px';
+            }
+        };
+
+        function closeAnnouncement() {
+            announcement.style.display = 'none';
+            nav.style.top = '0';
+            document.body.style.paddingTop = '0';
+            localStorage.setItem(storageKey, 'true');
+        }
+
+        // 複製 IP 邏輯 (保留原功能)
         function copyIP(ip, region) {
             navigator.clipboard.writeText(ip).then(() => {
                 const toast = document.getElementById('toast');
                 toast.innerHTML = `<i class="fas fa-check"></i> 已複製 ${region} 節點 IP！`;
                 toast.style.display = 'block';
                 
-                // 3秒後消失
                 setTimeout(() => {
                     toast.style.display = 'none';
                 }, 3000);
