@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft toyea-拓野伺服器 | 官方網站</title>
 
-    <!-- Google Fonts（修正） -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="fonts.googleapis.com" rel="stylesheet">
 
-    <!-- Font Awesome（修正） -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="cdnjs.cloudflare.com">
 
     <style>
         :root {
@@ -71,13 +70,14 @@
 
         .nav-links { list-style: none; display: flex; }
         .nav-links li { margin-left: 20px; }
-        .nav-links a { color: white; text-decoration: none; }
+        .nav-links a { color: white; text-decoration: none; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary-color); }
 
         /* 主視覺 */
         .hero {
             min-height: 100vh;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-                        url('https://images.unsplash.com/photo-1587574293340-e0011c4e8ecf');
+                        url('images.unsplash.com');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -86,30 +86,32 @@
             align-items: center;
             text-align: center;
             color: white;
-            padding: 100px 20px;
+            padding: 120px 20px;
         }
 
         .hero h1 { font-size: 3.5rem; margin-bottom: 10px; }
-        .hero p { margin-bottom: 30px; }
+        .hero p { margin-bottom: 30px; font-size: 1.2rem; }
 
-        /* IP 節點 */
+        /* IP 節點容器 */
         .ip-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
             max-width: 1200px;
+            width: 100%;
         }
 
         .ip-card {
             background: rgba(255,255,255,0.1);
             border: 2px solid var(--primary-color);
             border-radius: 15px;
-            padding: 20px;
-            width: 280px;
+            padding: 25px;
+            width: 300px;
             cursor: pointer;
             transition: 0.3s;
             position: relative;
+            backdrop-filter: blur(5px);
         }
 
         .ip-card:hover {
@@ -122,17 +124,19 @@
             color: var(--primary-color);
             font-weight: bold;
             margin-bottom: 8px;
+            font-size: 1.2rem;
         }
 
         .node-address {
-            font-family: monospace;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 1.1rem;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            display: block;
         }
 
         .node-desc {
             font-size: 0.85rem;
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
         .copy-icon {
@@ -142,35 +146,63 @@
             opacity: 0.5;
         }
 
+        /* 特色介紹區 */
         .features {
-            padding: 80px 10%;
+            padding: 100px 10%;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-            gap: 30px;
-            background: white;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            background: #ffffff;
         }
 
         .feature-card {
-            background: white;
+            background: #fff;
             padding: 40px;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
         }
 
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        /* 頁腳 */
         footer {
             background: var(--secondary-color);
             color: white;
             text-align: center;
-            padding: 60px 0;
+            padding: 60px 20px;
+        }
+
+        .social-links {
+            margin: 20px 0;
         }
 
         .social-links a {
             color: white;
-            font-size: 1.6rem;
+            font-size: 2rem;
             margin: 0 15px;
+            transition: 0.3s;
         }
 
+        .social-links a:hover {
+            color: #5865F2; /* Discord 顏色 */
+        }
+
+        /* 提示框 */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -182,25 +214,37 @@
             border-radius: 50px;
             display: none;
             z-index: 2000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         /* 右下角浮動 Discord */
         .discord-float {
             position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 58px;
-            height: 58px;
+            right: 25px;
+            bottom: 25px;
+            width: 60px;
+            height: 60px;
             background: #5865F2;
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 30px;
             text-decoration: none;
             box-shadow: 0 6px 18px rgba(0,0,0,.35);
             z-index: 3000;
+            transition: 0.3s;
+        }
+
+        .discord-float:hover {
+            transform: scale(1.1);
+            background: #4752C4;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* 手機版建議隱藏或改為漢堡選單 */
         }
     </style>
 </head>
@@ -221,42 +265,46 @@
     </ul>
 </nav>
 
+<!-- 主視覺區域 -->
 <section class="hero" id="home">
     <h1>探索無限可能的方塊世界</h1>
     <p>請選擇最適合您的連接節點</p>
 
+    <div class="ip-container">
         <div class="ip-card" onclick="copyIP('toyea-us.de5.net','美國')">
             <i class="far fa-copy copy-icon"></i>
             <span class="node-name">Global Node</span>
             <span class="node-address">toyea-us.de5.net</span>
-            <p class="node-desc">目前主機在美國暫時開放此節點</p>
+            <p class="node-desc">目前主機在美國暫時開放此節點 (點擊複製)</p>
         </div>
     </div>
 </section>
 
+<!-- 特色區塊 (修正：獨立出 footer 且補齊 HTML 結構) -->
+<section class="features" id="features">
+    <div class="feature-card">
+        <i class="fas fa-shield-alt"></i>
+        <h3>穩定運行</h3>
+        <p>目前預算有限僅開放六日，暑假將改為24/7主機，提供最穩定的生存環境。</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-users"></i>
+        <h3>友好社群</h3>
+        <p>嚴謹的管理團隊與友善的玩家環境，杜絕任何作弊與惡意騷擾行為。</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-map-marked-alt"></i>
+        <h3>精采紀錄</h3>
+        <p>定期將伺服器活動錄製成影片分享至YouTube，記錄下每一刻精彩瞬間。</p>
+    </div>
+</section>
+
+<!-- 頁腳與加入區塊 -->
 <footer id="join">
     <p>加入我們的 Discord 社群</p>
     <div class="social-links">
-        <a href="https://discord.gg/你的邀請碼" target="_blank" rel="noopener">
+        <a href="discord.gg" target="_blank" rel="noopener" aria-label="Discord">
             <i class="fab fa-discord"></i>
-       
-    <section class="features" id="features">
-        <div class="feature-card">
-            <i class="fas fa-shield-alt"></i>
-            <h3>穩定運行</h3>
-            <p>目前預算有限僅開放六日，暑假將改為24/7主機，提供最穩定的生存環境。</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-users"></i>
-            <h3>友好社群</h3>
-            <p>嚴謹的管理團隊與友善的玩家環境，杜絕任何作弊與惡意騷擾行為。</p>
-        </div>
-        <div class="feature-card">
-            <i class="fas fa-map-marked-alt"></i>
-            <h3>精采紀錄</h3>
-            <p>定期將伺服器活動錄製成影片分享至YouTube，記錄下每一刻精彩瞬間。</p>
-        </div>
-    </section>
         </a>
     </div>
     <p>&copy; 2025 Minecraft | toyea-拓野伺服器. 版權所有.</p>
@@ -264,8 +312,8 @@
 
 <div class="toast" id="toast">IP 已複製！</div>
 
-<!-- 浮動 Discord -->
-<a href="https://discord.com"
+<!-- 浮動 Discord 按鈕 -->
+<a href="discord.gg"
    class="discord-float"
    target="_blank"
    rel="noopener"
@@ -279,6 +327,7 @@
     const nav = document.getElementById('main-nav');
 
     window.onload = function () {
+        // 檢查是否關閉過公告
         if (!localStorage.getItem(storageKey)) {
             announcement.style.display = 'block';
             nav.style.top = '40px';
@@ -296,9 +345,13 @@
     function copyIP(ip, region) {
         navigator.clipboard.writeText(ip).then(() => {
             const toast = document.getElementById('toast');
-            toast.innerHTML = `已複製 ${region} 節點 IP！`;
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> 已複製 ${region} 節點 IP！`;
             toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }).catch(err => {
+            console.error('無法複製: ', err);
         });
     }
 </script>
