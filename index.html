@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft toyea-拓野伺服器 | 官方網站</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts 修正版 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="fonts.googleapis.com" rel="stylesheet">
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome 圖標庫修正版 -->
     <link rel="stylesheet" href="cdnjs.cloudflare.com">
 
     <style>
@@ -20,7 +22,7 @@
             --announcement-height: 40px;
         }
 
-        /* 修正錨點跳轉位置，防止標題被導覽列遮住 */
+        /* 修正錨點跳轉位置 */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px; 
@@ -33,7 +35,7 @@
             line-height: 1.6;
             color: var(--text-dark);
             background-color: #f4f4f4;
-            padding-top: 70px; /* 預留給導覽列的空間 */
+            padding-top: 70px;
         }
 
         /* 公告欄 */
@@ -46,7 +48,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 3000; /* 最高層級 */
+            z-index: 3000;
             font-size: 0.9rem;
             font-weight: bold;
             display: none;
@@ -60,7 +62,7 @@
             padding: 0 10px;
         }
 
-        /* 導覽列（修正連結不見的問題） */
+        /* 導覽列 */
         nav {
             background-color: rgba(0, 0, 0, 0.95);
             color: white;
@@ -181,7 +183,7 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
-        /* 浮動 Discord */
+        /* 浮動 Discord 按鈕 */
         .discord-float {
             position: fixed;
             right: 25px;
@@ -204,13 +206,14 @@
 
         @media (max-width: 600px) {
             .hero h1 { font-size: 2.2rem; }
-            .nav-links { display: none; } /* 手機版隱藏選單以免重疊 */
+            .nav-links { display: none; }
         }
     </style>
 </head>
 
 <body>
 
+<!-- 公告欄區域 -->
 <div id="site-announcement">
     📣 公告：目前僅開放六日運行，暑假將改為24/7！
     <span class="close-announcement" onclick="closeAnnouncement()">×</span>
@@ -230,8 +233,9 @@
     <p>請選擇最適合您的連接節點</p>
 
     <div class="ip-container">
+        <!-- 點擊可複製 IP -->
         <div class="ip-card" onclick="copyIP('toyea-us.de5.net','美國')">
-            <i class="far fa-copy copy-icon"></i>
+            <i class="far fa-copy" style="float: right;"></i>
             <span class="node-name">Global Node</span>
             <span class="node-address">toyea-us.de5.net</span>
             <p class="node-desc">目前主機在美國暫時開放此節點 (點擊複製)</p>
@@ -243,7 +247,7 @@
     <div class="feature-card">
         <i class="fas fa-shield-alt"></i>
         <h3>穩定運行</h3>
-        <p>目前僅開放六日暑假將改為24/7主機，提供最穩定的生存環境。</p>
+        <p>目前預算有限僅開放六日，暑假將改為24/7主機，提供最穩定的生存環境。</p>
     </div>
     <div class="feature-card">
         <i class="fas fa-users"></i>
@@ -260,16 +264,19 @@
 <footer id="join">
     <div class="social-links">
         <p style="margin-bottom: 20px; font-weight: bold;">加入我們的 Discord 社群</p>
-        <a href="discord.gg" target="_blank" rel="noopener">
+        <!-- 修改處：填入完整 Discord 網址 -->
+        <a href="discord.com" target="_blank" rel="noopener">
             <i class="fab fa-discord"></i>
         </a>
     </div>
     <p>&copy; 2025 Minecraft | toyea-拓野伺服器. 版權所有.</p>
 </footer>
 
+<!-- IP 複製提示框 -->
 <div class="toast" id="toast">IP 已複製！</div>
 
-<a href="discord.gg" class="discord-float" target="_blank" rel="noopener">
+<!-- 修改處：填入完整 Discord 網址 -->
+<a href="discord.com" class="discord-float" target="_blank" rel="noopener">
     <i class="fab fa-discord"></i>
 </a>
 
@@ -278,6 +285,7 @@
     const announcement = document.getElementById('site-announcement');
     const nav = document.getElementById('main-nav');
 
+    // 處理公告顯示
     window.onload = function () {
         if (!localStorage.getItem(storageKey)) {
             announcement.style.display = 'block';
@@ -291,12 +299,17 @@
         localStorage.setItem(storageKey, 'true');
     }
 
+    // 複製 IP 功能
     function copyIP(ip, region) {
         navigator.clipboard.writeText(ip).then(() => {
             const toast = document.getElementById('toast');
             toast.innerText = `已複製 ${region} 節點 IP！`;
             toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }).catch(err => {
+            console.error('複製失敗', err);
         });
     }
 </script>
