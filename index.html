@@ -220,6 +220,18 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
+        .status-text {
+            max-width: 600px;
+            margin: 30px auto;
+            background: var(--secondary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            font-family: monospace;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
         .version-table {
             width: 100%;
             max-width: 700px;
@@ -395,17 +407,20 @@
     </div>
 </section>
 
-<!-- 新增：詳細加入區塊 -->
+<!-- 詳細加入區塊 -->
 <section class="join-section" id="join">
     <h2>📡 詳細加入方式</h2>
 
-    <!-- Java 狀態 -->
+    <!-- Java 版狀態 -->
     <p><strong>Java 版即時狀態</strong></p>
-    <img src="https://api.mcsrvstat.us/v2/toyea-us.de5.net/banner?theme=dark" alt="Java 伺服器狀態" class="status-banner">
+    <div id="java-status-text" class="status-text">載入中...</div>
+    <!-- 如果想保留圖片（伺服器上線後會自動顯示） -->
+    <img src="https://api.mcsrvstat.us/3/toyea-us.de5.net:25565/banner" alt="Java 伺服器狀態（離線時不顯示）" class="status-banner" onerror="this.style.display='none'">
 
-    <!-- 基岩狀態（用 be 域名） -->
+    <!-- 基岩版狀態 -->
     <p><strong>基岩版即時狀態</strong></p>
-    <img src="https://api.mcsrvstat.us/v2/be.toyea-us.de5.net:56725/banner?theme=dark" alt="基岩伺服器狀態" class="status-banner">
+    <div id="bedrock-status-text" class="status-text">載入中...</div>
+    <img src="https://api.mcsrvstat.us/bedrock/3/be.toyea-us.de5.net:56725/banner" alt="基岩伺服器狀態（離線時不顯示）" class="status-banner" onerror="this.style.display='none'">
 
     <!-- 版本比較表格 -->
     <table class="version-table">
@@ -428,34 +443,8 @@
             <td>兩個地址都可，建議用 be</td>
         </tr>
     </table>
-
-    <!-- 加入畫面示意 -->
-    <h3 style="margin-top: 50px;">加入畫面範例</h3>
+    <h3 style="margin-top: 50px;">歡迎加入一起開拓荒野</h3>
     <div class="screenshots">
-
-<grok-card data-id="66b230" data-type="image_card"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="a97c78" data-type="image_card"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="3f7cbc" data-type="image_card"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="9985bd" data-type="image_card"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="db7bea" data-type="image_card"  data-arg-size="LARGE" ></grok-card>
-
-
-
-<grok-card data-id="7f7cfc" data-type="image_card"  data-arg-size="LARGE" ></grok-card>
-
-
     </div>
 </section>
 
@@ -464,6 +453,12 @@
         <p style="margin-bottom: 20px; font-weight: bold;">加入我們的 Discord 社群</p>
         <a href="https://discord.gg/nVwTEhZe4v" target="_blank" rel="noopener">
             <i class="fab fa-discord"></i>
+<a href="https://youtube.com/channel/UC1haHnVyIoeqMixN2XrDCOg?si=n6LZuqLYMJu5W8zs" target="_blank" rel="noopener">
+    <i class="fab fa-youtube" style="color: #FF0000;"></i>
+</a>
+<a href="https://youtube.com/channel/UC1haHnVyIoeqMixN2XrDCOg?si=n6LZuqLYMJu5W8zs" class="youtube-float" target="_blank" rel="noopener">
+    <i class="fab fa-youtube"></i>
+</a>
         </a>
     </div>
     <p>&copy; 2025-2026 Minecraft | toyea-拓野伺服器. 版權所有.</p>
@@ -485,6 +480,7 @@
             announcement.style.display = 'block';
             nav.style.top = '40px';
         }
+        updateServerStatus(); // 初始載入
     };
 
     function closeAnnouncement() {
@@ -501,7 +497,51 @@
             setTimeout(() => { toast.style.display = 'none'; }, 3000);
         });
     }
+
+    // 伺服器狀態更新函數
+    function updateServerStatus() {
+        // Java 版
+        fetch('https://api.mcsrvstat.us/3/toyea-us.de5.net:25565')
+            .then(r => r.json())
+            .then(data => {
+                if (data.online) {
+                    document.getElementById('java-status-text').innerHTML = `
+                        <strong>🟢 在線</strong><br>
+                        人數：${data.players.online} / ${data.players.max}<br>
+                        版本：${data.version || '未知'}<br>
+                        MOTD：<br>${(data.motd?.clean || ['無']).join('<br>')}
+                    `;
+                } else {
+                    document.getElementById('java-status-text').innerHTML = '🔴 伺服器目前離線或維護中';
+                }
+            })
+            .catch(() => {
+                document.getElementById('java-status-text').innerHTML = '❌ 無法連線到狀態 API';
+            });
+
+        // 基岩版
+        fetch('https://api.mcsrvstat.us/bedrock/3/be.toyea-us.de5.net:56725')
+            .then(r => r.json())
+            .then(data => {
+                if (data.online) {
+                    document.getElementById('bedrock-status-text').innerHTML = `
+                        <strong>🟢 在線</strong><br>
+                        人數：${data.players.online} / ${data.players.max}<br>
+                        版本：${data.version || '未知'}<br>
+                        MOTD：<br>${(data.motd?.clean || ['無']).join('<br>')}
+                    `;
+                } else {
+                    document.getElementById('bedrock-status-text').innerHTML = '🔴 伺服器目前離線或維護中';
+                }
+            })
+            .catch(() => {
+                document.getElementById('bedrock-status-text').innerHTML = '❌ 無法連線到狀態 API';
+            });
+    }
+
+    // 每 60 秒自動更新一次
+    setInterval(updateServerStatus, 60000);
 </script>
 
 </body>
-</html>
+    </html>
