@@ -166,7 +166,7 @@
             font-family: monospace; 
             font-size: 1.2rem; 
             margin-bottom: 10px; 
-            display: block; 
+            display: block;
             background: rgba(0,0,0,0.3); 
             padding: 5px; 
             border-radius: 5px; 
@@ -305,6 +305,7 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
+        /* Discord 懸浮球 */
         .discord-float {
             position: fixed;
             right: 25px;
@@ -327,6 +328,29 @@
             transform: rotate(10deg) scale(1.1); 
         }
 
+        /* YouTube 懸浮球（新增） */
+        .youtube-float {
+            position: fixed;
+            right: 25px;
+            bottom: 95px; /* 在 Discord 上方，間隔 10px */
+            width: 60px;
+            height: 60px;
+            background: #FF0000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 3000;
+            transition: 0.3s;
+        }
+        .youtube-float:hover {
+            transform: rotate(10deg) scale(1.1);
+        }
+
         @media (max-width: 600px) {
             .hero h1 { font-size: 2.4rem; }
             .hero p { font-size: 1.1rem; }
@@ -345,7 +369,16 @@
             }
             footer { padding: 60px 20px; }
             .social-links a { font-size: 2.2rem; margin: 0 10px; }
-            .discord-float { width: 55px; height: 55px; font-size: 28px; }
+
+            /* 手機版縮小懸浮球 */
+            .discord-float, .youtube-float {
+                width: 55px;
+                height: 55px;
+                font-size: 28px;
+            }
+            .youtube-float {
+                bottom: 85px; /* 保持間隔 */
+            }
         }
     </style>
 </head>
@@ -414,7 +447,6 @@
     <!-- Java 版狀態 -->
     <p><strong>Java 版即時狀態</strong></p>
     <div id="java-status-text" class="status-text">載入中...</div>
-    <!-- 如果想保留圖片（伺服器上線後會自動顯示） -->
     <img src="https://api.mcsrvstat.us/3/toyea-us.de5.net:25565/banner" alt="Java 伺服器狀態（離線時不顯示）" class="status-banner" onerror="this.style.display='none'">
 
     <!-- 基岩版狀態 -->
@@ -450,23 +482,31 @@
 
 <footer>
     <div class="social-links">
-        <p style="margin-bottom: 20px; font-weight: bold;">加入我們的 Discord 社群</p>
+        <p style="margin-bottom: 20px; font-weight: bold;">加入我們的社群</p>
         <a href="https://discord.gg/nVwTEhZe4v" target="_blank" rel="noopener">
             <i class="fab fa-discord"></i>
-<a href="https://youtube.com/channel/UC1haHnVyIoeqMixN2XrDCOg?si=n6LZuqLYMJu5W8zs" target="_blank" rel="noopener">
-    <i class="fab fa-youtube" style="color: #FF0000;"></i>
-</a>
-<a href="https://youtube.com/channel/UC1haHnVyIoeqMixN2XrDCOg?si=n6LZuqLYMJu5W8zs" class="youtube-float" target="_blank" rel="noopener">
-    <i class="fab fa-youtube"></i>
-</a>
         </a>
+        <!-- YouTube 連結移到懸浮球，不在這裡重複 -->
     </div>
     <p>&copy; 2025-2026 Minecraft | toyea-拓野伺服器. 版權所有.</p>
 </footer>
 
+<!-- Toast 提示 -->
 <div class="toast" id="toast">IP 已複製！</div>
 
-<a href="https://discord.gg/nVwTEhZe4v" class="discord-float" target="_blank" rel="noopener">
+<!-- YouTube 懸浮球（在上） -->
+<a href="https://www.youtube.com/channel/UC1haHnVyIoeqMixN2XrDCOg" 
+   class="youtube-float" 
+   target="_blank" 
+   rel="noopener">
+    <i class="fab fa-youtube"></i>
+</a>
+
+<!-- Discord 懸浮球（在下） -->
+<a href="https://discord.gg/nVwTEhZe4v" 
+   class="discord-float" 
+   target="_blank" 
+   rel="noopener">
     <i class="fab fa-discord"></i>
 </a>
 
@@ -544,4 +584,4 @@
 </script>
 
 </body>
-    </html>
+</html>
