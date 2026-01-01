@@ -447,7 +447,7 @@
     <!-- Java 版狀態 -->
     <p><strong>Java 版即時狀態</strong></p>
     <div id="java-status-text" class="status-text">載入中...</div>
-    <img src="https://api.mcsrvstat.us/3/toyea-us.de5.net:25565/banner" alt="Java 伺服器狀態（離線時不顯示）" class="status-banner" onerror="this.style.display='none'">
+    <img src="https://api.mcsrvstat.us/3/toyea-us.de5.net/banner" alt="Java 伺服器狀態（離線時不顯示）" class="status-banner" onerror="this.style.display='none'">
 
     <!-- 基岩版狀態 -->
     <p><strong>基岩版即時狀態</strong></p>
@@ -540,8 +540,8 @@
 
     // 伺服器狀態更新函數
     function updateServerStatus() {
-        // Java 版
-        fetch('https://api.mcsrvstat.us/3/toyea-us.de5.net:25565')
+        // Java 版（已修正：不指定端口，自動使用 SRV 記錄找到 56725）
+        fetch('https://api.mcsrvstat.us/3/toyea-us.de5.net')
             .then(r => r.json())
             .then(data => {
                 if (data.online) {
@@ -552,14 +552,14 @@
                         MOTD：<br>${(data.motd?.clean || ['無']).join('<br>')}
                     `;
                 } else {
-                    document.getElementById('java-status-text').innerHTML = '🔴 伺服器目前離線或維護中';
+                    document.getElementById('java-status-text').innerHTML = '🔴 伺服器目前離線維護中';
                 }
             })
             .catch(() => {
                 document.getElementById('java-status-text').innerHTML = '❌ 無法連線到狀態 API';
             });
 
-        // 基岩版
+        // 基岩版（保持不變）
         fetch('https://api.mcsrvstat.us/bedrock/3/be.toyea-us.de5.net:56725')
             .then(r => r.json())
             .then(data => {
@@ -571,7 +571,7 @@
                         MOTD：<br>${(data.motd?.clean || ['無']).join('<br>')}
                     `;
                 } else {
-                    document.getElementById('bedrock-status-text').innerHTML = '🔴 伺服器目前離線或維護中';
+                    document.getElementById('bedrock-status-text').innerHTML = '🔴 伺服器目前離線維護中';
                 }
             })
             .catch(() => {
