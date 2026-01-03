@@ -351,6 +351,27 @@
             transform: rotate(10deg) scale(1.1);
         }
 
+        /* 新增：影片響應式包裝（只影響影片區塊） */
+        .video-responsive {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         @media (max-width: 600px) {
             .hero h1 { font-size: 2.4rem; }
             .hero p { font-size: 1.1rem; }
@@ -474,22 +495,22 @@
             <td>56725（必填）</td>
             <td>兩個地址都可，建議用 be</td>
         </tr>
+    </table>
+
     <h1>加入伺服器範例影片</h1>
-<div class="video-responsive">
+    <div class="video-responsive">
         <iframe 
-            src="https://youtu.be/dQw4w9WgXcQ?si=uEfWT7yFDfWKsvhyrel=0" 
-            title="YouTube video player" 
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" 
+            title="加入伺服器範例影片 - Rick Astley Never Gonna Give You Up" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
         </iframe>
     </div>
     <p style="margin-top: 20px;">
+        （點擊播放觀看完整加入教學～記得開大聲音喔！）
     </p>
 
-</body>
-</html>
-    </table>
     <h3 style="margin-top: 50px;">歡迎加入一起開拓荒野</h3>
     <div class="screenshots">
     </div>
