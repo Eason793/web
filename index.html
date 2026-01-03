@@ -16,6 +16,10 @@
           integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" 
           crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Biel.ai 初始化（加在 head 末尾） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/biel-search/dist/biel-search/biel-search.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/biel-search/dist/biel-search/biel-search.esm.js"></script>
+
     <style>
         :root {
             --primary-color: #52a033;
@@ -636,6 +640,16 @@
    rel="noopener">
     <i class="fab fa-discord"></i>
 </a>
+
+<!-- Biel.ai 搜尋按鈕（浮動在右下角） -->
+<biel-search-button
+    project="9m1srqth6q"
+    header-title="Biel.ai Search"
+    button-position="bottom-right"
+    modal-position="sidebar-right"
+    button-style="rounded">
+    Search...
+</biel-search-button>
 
 <script>
     const storageKey = 'announcement_2025_v1';
