@@ -104,6 +104,103 @@
         }
         .nav-links a:hover { color: var(--primary-color); }
 
+        /* ── 以下為新增的漢堡選單 CSS ── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .hamburger span {
+            background-color: white;
+            height: 3px;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger span:nth-child(1) { transform-origin: left; }
+        .hamburger span:nth-child(3) { transform-origin: left; }
+
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.95);
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .mobile-nav li {
+            margin: 0;
+            text-align: center;
+        }
+
+        .mobile-nav a {
+            display: block;
+            padding: 1rem;
+            font-size: 1.2rem;
+        }
+
+        #menu-toggle:checked ~ .hamburger span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 6px);
+        }
+
+        #menu-toggle:checked ~ .hamburger span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #menu-toggle:checked ~ .hamburger span:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -5px);
+        }
+
+        #menu-toggle:checked ~ .mobile-nav {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none !important;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .features, .join-section {
+                padding: 60px 5%;
+            }
+            .screenshots {
+                flex-direction: column;
+                align-items: center;
+            }
+            footer { padding: 60px 20px; }
+            .social-links a { font-size: 2.2rem; margin: 0 10px; }
+
+            /* 手機版縮小懸浮球 */
+            .discord-float, .youtube-float {
+                width: 55px;
+                height: 55px;
+                font-size: 28px;
+            }
+            .youtube-float {
+                bottom: 85px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav {
+                display: none !important;
+            }
+            .hamburger { display: none; }
+        }
+        /* ── 漢堡選單 CSS 結束 ── */
+
         .hero {
             min-height: 90vh;
             background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
@@ -199,7 +296,6 @@
             font-size: 1.5rem; 
         }
 
-        /* 新增：加入伺服器區塊 */
         .join-section {
             padding: 100px 10%;
             background: #fff;
@@ -305,7 +401,6 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
-        /* Discord 懸浮球 */
         .discord-float {
             position: fixed;
             right: 25px;
@@ -328,11 +423,10 @@
             transform: rotate(10deg) scale(1.1); 
         }
 
-        /* YouTube 懸浮球（新增） */
         .youtube-float {
             position: fixed;
             right: 25px;
-            bottom: 95px; /* 在 Discord 上方，間隔 10px */
+            bottom: 95px;
             width: 60px;
             height: 60px;
             background: #FF0000;
@@ -351,10 +445,9 @@
             transform: rotate(10deg) scale(1.1);
         }
 
-        /* 新增：影片響應式包裝（只影響影片區塊） */
         .video-responsive {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 比例 */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             max-width: 100%;
@@ -380,26 +473,6 @@
                 max-width: 320px; 
                 padding: 25px; 
             }
-            .nav-links { display: none; }
-            .features, .join-section {
-                padding: 60px 5%;
-            }
-            .screenshots {
-                flex-direction: column;
-                align-items: center;
-            }
-            footer { padding: 60px 20px; }
-            .social-links a { font-size: 2.2rem; margin: 0 10px; }
-
-            /* 手機版縮小懸浮球 */
-            .discord-float, .youtube-float {
-                width: 55px;
-                height: 55px;
-                font-size: 28px;
-            }
-            .youtube-float {
-                bottom: 85px; /* 保持間隔 */
-            }
         }
     </style>
 </head>
@@ -413,7 +486,26 @@
 
 <nav id="main-nav">
     <div class="logo"><i class="fas fa-cubes"></i> toyea-拓野伺服器</div>
-    <ul class="nav-links">
+
+    <!-- 漢堡選單控制 -->
+    <input type="checkbox" id="menu-toggle" class="menu-toggle" hidden>
+    
+    <!-- 漢堡圖示 -->
+    <label for="menu-toggle" class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </label>
+
+    <!-- 電腦版導航 -->
+    <ul class="nav-links desktop-nav">
+        <li><a href="#home">首頁</a></li>
+        <li><a href="#features">特色</a></li>
+        <li><a href="#join">加入伺服器</a></li>
+    </ul>
+
+    <!-- 手機版導航 -->
+    <ul class="nav-links mobile-nav">
         <li><a href="#home">首頁</a></li>
         <li><a href="#features">特色</a></li>
         <li><a href="#join">加入伺服器</a></li>
@@ -501,7 +593,7 @@
     <div class="video-responsive">
         <iframe 
             src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0" 
-            title="加入伺服器範例影片 - Rick Astley Never Gonna Give You Up" 
+            title="加入伺服器教學範例 - Rick Astley Never Gonna Give You Up" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
@@ -522,7 +614,6 @@
         <a href="https://discord.gg/nVwTEhZe4v" target="_blank" rel="noopener">
             <i class="fab fa-discord"></i>
         </a>
-        <!-- YouTube 連結移到懸浮球，不在這裡重複 -->
     </div>
     <p>&copy; 2025-2026 Minecraft | toyea-拓野伺服器. 版權所有.</p>
 </footer>
@@ -530,7 +621,7 @@
 <!-- Toast 提示 -->
 <div class="toast" id="toast">IP 已複製！</div>
 
-<!-- YouTube 懸浮球（在上） -->
+<!-- YouTube 懸浮球 -->
 <a href="https://www.youtube.com/channel/UC1haHnVyIoeqMixN2XrDCOg" 
    class="youtube-float" 
    target="_blank" 
@@ -538,7 +629,7 @@
     <i class="fab fa-youtube"></i>
 </a>
 
-<!-- Discord 懸浮球（在下） -->
+<!-- Discord 懸浮球 -->
 <a href="https://discord.gg/nVwTEhZe4v" 
    class="discord-float" 
    target="_blank" 
@@ -556,7 +647,7 @@
             announcement.style.display = 'block';
             nav.style.top = '40px';
         }
-        updateServerStatus(); // 初始載入
+        updateServerStatus();
     };
 
     function closeAnnouncement() {
@@ -574,9 +665,7 @@
         });
     }
 
-    // 伺服器狀態更新函數
     function updateServerStatus() {
-        // Java 版（已修正：不指定端口，自動使用 SRV 記錄找到 56725）
         fetch('https://api.mcsrvstat.us/3/toyea-us.de5.net')
             .then(r => r.json())
             .then(data => {
@@ -595,7 +684,6 @@
                 document.getElementById('java-status-text').innerHTML = '❌ 無法連線到狀態 API';
             });
 
-        // 基岩版（保持不變）
         fetch('https://api.mcsrvstat.us/bedrock/3/be.toyea-us.de5.net:56725')
             .then(r => r.json())
             .then(data => {
@@ -615,7 +703,6 @@
             });
     }
 
-    // 每 60 秒自動更新一次
     setInterval(updateServerStatus, 60000);
 </script>
 
